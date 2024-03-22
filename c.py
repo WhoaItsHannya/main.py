@@ -581,16 +581,21 @@ class Enemy(Entity):
 
 class Boss(Enemy):
     # a boss monster,s elite skills are handled by the engine as spells.
-    def __init__(self, stats, items=None):
+    def __init__(self, stats, items=None, quotes=None):
         super().__init__(stats, items)
         self._type = "boss"
         self._intention = None  # Intention indicates the next Elite Skill that the boss wants to use
         self._intentionTarget = None
+        self._quotes = quotes
 
     def takeTurn(self, combatEntities):
         self.startTurn(self._effects, combatEntities)
+        self._l = []
         print(f"{self._name}, it,s your turn!")
-        combatEntities.remove(self)
+        for entity in combatEntities:
+            if entity._type in ['enemy','boss']:
+                combatEntities.remove(entity)
+                self._l.append(entity)
         if self._quotes is not None:
             speech(choice(self._quotes),self._name)
         self._mp += 4
@@ -627,6 +632,8 @@ class Boss(Enemy):
             c()
 
         combatEntities.append(self)
+        for entity in self._l:
+            combatEntities.append(entity)
         self.endTurn(self._effects, combatEntities)
         return False
 

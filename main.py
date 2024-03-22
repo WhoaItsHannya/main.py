@@ -52,3 +52,4 @@ metalFace = Boss([800, 5, 1, 0, 0, 20, 2, "Metal Face", 20])
 metalFace.learnSpell(mecha_buster_x)
 
 resolveCombat([me, m01, m02, metalFace])
+
